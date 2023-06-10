@@ -24,7 +24,7 @@ Project Screenshots
 
 ![Login](./docs/images/login.png)
 ![User](./docs/images/user.png)
-![Role](./docs/images/role.PNG)
+![Role](./docs/images/role.png)
 ![RolePermission](./docs/images/rolePermission.png)
 ![Machine](./docs/images/machine.png)
 ![HeadscaleConfig](./docs/images/headscaleconfig.png)
