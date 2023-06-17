@@ -14,9 +14,9 @@
             <el-option :label="$t('normal.disable')" value="2" />
           </el-select>
         </el-form-item>
-<!--        <el-form-item :label="$t('account.mobile')">-->
-<!--          <el-input v-model.trim="params.mobile" clearable :placeholder="$t('account.mobile')" @clear="search" />-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item :label="$t('account.mobile')">-->
+        <!--          <el-input v-model.trim="params.mobile" clearable :placeholder="$t('account.mobile')" @clear="search" />-->
+        <!--        </el-form-item>-->
         <el-form-item :label="$t('account.email')">
           <el-input v-model.trim="params.email" clearable :placeholder="$t('account.email')" @clear="search" />
         </el-form-item>
@@ -26,23 +26,29 @@
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">{{ $t('normal.create') }}</el-button>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
-<!--            {{ $t('normal.delete') }}</el-button>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
+        <!--            {{ $t('normal.delete') }}</el-button>-->
+        <!--        </el-form-item>-->
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" stripe style="width: 100%" @selection-change="handleSelectionChange">
-<!--        <el-table-column type="selection" width="55" align="center" />-->
+        <!--        <el-table-column type="selection" width="55" align="center" />-->
         <el-table-column show-overflow-tooltip sortable prop="username" :label="$t('account.username')" align="center" />
         <el-table-column show-overflow-tooltip sortable prop="nickname" :label="$t('account.nickname')" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="roles[roleIds].name" :label="$t('account.permission')" align="center" />
+        <el-table-column show-overflow-tooltip sortable :label="$t('account.permission')" align="center">
+          <template slot-scope="scope">
+            <template v-for="roleId in scope.row.roleIds">
+              <el-tag :key="roleId" size="small" type="primary">{{ roles[roleId - 1].name }}</el-tag>
+            </template>
+          </template>
+        </el-table-column>
         <el-table-column show-overflow-tooltip sortable prop="status" :label="$t('normal.status')" align="center">
           <template slot-scope="scope">
             <el-tag size="small" :type="scope.row.status === 1 ? 'success':'danger'" disable-transitions>{{ scope.row.status === 1 ? $t('normal.enabled'):$t('normal.disabled') }}</el-tag>
           </template>
         </el-table-column>
-<!--        <el-table-column show-overflow-tooltip sortable prop="mobile" :label="$t('account.mobile')" />-->
+        <!--        <el-table-column show-overflow-tooltip sortable prop="mobile" :label="$t('account.mobile')" />-->
         <el-table-column show-overflow-tooltip sortable prop="email" :label="$t('account.email')" align="center" />
         <el-table-column show-overflow-tooltip sortable prop="creator" :label="$t('system.users.creator')" align="center" />
         <el-table-column show-overflow-tooltip sortable prop="introduction" :label="$t('normal.describe')" align="center" />
@@ -93,7 +99,7 @@
           <!--            <el-input v-model.trim="dialogFormData.mobile" :placeholder="$t('account.mobile')" />-->
           <!--          </el-form-item>-->
           <el-form-item :label="$t('account.role')" prop="roleIds">
-            <el-select v-model.trim="dialogFormData.roleIds" :placeholder="$t('system.users.placeholder.selectRole')" style="width:100%">
+            <el-select v-model.trim="dialogFormData.roleIds" multiple :multiple-limit="1" :placeholder="$t('system.users.placeholder.selectRole')" style="width:100%">
               <el-option
                 v-for="item in roles"
                 :key="item.ID"
@@ -130,24 +136,24 @@ import { getRoles } from '@/api/system/role'
 export default {
   name: 'User',
   data() {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error(this.$t('system.users.message.mobileEmpty')))
-      } else {
-        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-        if (reg.test(value)) {
-          callback()
-        } else {
-          return callback(new Error(this.$t('system.users.message.mobileErr')))
-        }
-      }
-    }
+    // var checkPhone = (rule, value, callback) => {
+    //   if (!value) {
+    //     return callback(new Error(this.$t('system.users.message.mobileEmpty')))
+    //   } else {
+    //     const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+    //     if (reg.test(value)) {
+    //       callback()
+    //     } else {
+    //       return callback(new Error(this.$t('system.users.message.mobileErr')))
+    //     }
+    //   }
+    // }
     var checkEmail = (rule, value, callback) => {
       if (!value) {
         return callback(new Error(this.$t('system.users.message.emailEmpty')))
       } else {
         // const reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-        const reg = /^(([a-zA-Z]|[0-9])+\.)?([a-zA-Z]|[0-9])+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+        const reg = /^(([a-zA-Z]|[0-9])+\.)?([a-zA-Z]|[0-9])+@[a-zA-Z0-9]+\.([a-zA-Z]{2,5})$/
         if (reg.test(value)) {
           callback()
         } else {

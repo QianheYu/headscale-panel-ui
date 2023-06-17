@@ -10,8 +10,9 @@ If there is an architecture that doesn't fit or changes are significant, I will 
 
 ## Installation method
 1. Download this project
-2. Edit the `.env.production` with your backend host and port
-3. Build `npm run build:prod`
+2. Run `npm install`
+3. Edit the `.env.production` with your backend host and port
+4. Build `npm run build:prod`
 
 ## Deployment
 Copy files in `dist` to your web server
