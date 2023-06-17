@@ -47,6 +47,7 @@ export default {
     edit: '编辑',
     save: '保存',
     delete: '删除',
+    deleteAll: '删除所有',
     copy: '复制',
     move: '移动',
     upload: '上传',
@@ -340,10 +341,11 @@ export default {
     path: '请求路径',
     status: '请求状态',
     timeCost: '请求耗时(ms)',
-    confirm: {
-      title: '提示',
-      message: '此操作将永久删除, 是否继续?',
-      canceledDelete: '已取消删除'
+    confirmDelete: '确定删除吗？',
+    message: {
+      confirmDeletion: '此操作将永久删除, 是否继续?',
+      prompt: '提示',
+      cancelDelete: '已取消删除'
     }
   },
   console: {

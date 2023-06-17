@@ -47,6 +47,7 @@ export default {
     edit: 'Edit',
     save: 'Save',
     delete: 'Delete',
+    deleteAll: 'Delete All',
     copy: 'Copy',
     move: 'Move',
     upload: 'Upload',
@@ -337,6 +338,12 @@ export default {
     path: 'Path',
     status: 'Status',
     timeCost: 'Time Cost(ms)',
+    confirmDelete: 'Are you sure to delete?',
+    message: {
+      confirmDeletion: 'This operation will be permanently deleted, are you sure?',
+      prompt: 'Prompt',
+      cancelDelete: 'Canceled Delete'
+    },
     confirm: {
       title: 'Tips',
       message: 'This operation will be permanently deleted, are you sure?',

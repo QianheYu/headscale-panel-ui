@@ -19,7 +19,13 @@
         </el-form-item>
         <el-form-item>
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">
-            {{ $t('normal.delete') }}</el-button>
+            {{ $t('normal.delete') }}
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button :loading="loading" icon="el-icon-delete" type="danger" @click="allDelete">
+            {{ $t('normal.deleteAll') }}
+          </el-button>
         </el-form-item>
       </el-form>
 
@@ -47,7 +53,7 @@
         <el-table-column fixed="right" :label="$t('normal.operate')" align="center" width="80">
           <template v-slot="scope">
             <el-tooltip :content="$t('normal.delete')" effect="dark" placement="top">
-              <el-popconfirm title="确定删除吗？" @confirm="singleDelete(scope.row.ID)">
+              <el-popconfirm :title="$t('log.confirmDelete')" @confirm="singleDelete(scope.row.ID)">
                 <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
               </el-popconfirm>
             </el-tooltip>
@@ -106,7 +112,7 @@ export default {
   },
   data() {
     return {
-      // 查询参数
+      // Enquiry parameters
       params: {
         username: '',
         ip: '',
@@ -115,14 +121,14 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      // 表格数据
+      // Table data
       tableData: [],
       total: 0,
       loading: false,
 
-      // 删除按钮弹出框
+      // Delete button pop-up box
       popoverVisible: false,
-      // 表格多选
+      // Form Multiple Choice
       multipleSelection: []
     }
   },
@@ -131,13 +137,13 @@ export default {
   },
   methods: {
     parseGoTime,
-    // 查询
+    // Search
     search() {
       this.params.pageNum = 1
       this.getTableData()
     },
 
-    // 获取表格数据
+    // Get table data
     async getTableData() {
       this.loading = true
       try {
@@ -149,11 +155,11 @@ export default {
       }
     },
 
-    // 批量删除
+    // Batch delete
     batchDelete() {
-      this.$confirm(this.$t('log.confirm.message'), this.$t('log.confirm.title'), {
+      this.$confirm(this.$t('log.message.confirmDeletion'), this.$t('log.message.prompt'), {
         type: 'warning'
-      }).then(async res => {
+      }).then(async() => {
         this.loading = true
         const operationLogIds = []
         this.multipleSelection.forEach(x => {
@@ -177,17 +183,46 @@ export default {
         this.$message({
           showClose: true,
           type: 'info',
-          message: this.$t('log.canceledDelete')
+          message: this.$t('log.message.cancelDelete')
         })
       })
     },
 
-    // 表格多选
+    // Delete all
+    async allDelete() {
+      this.$confirm(this.$t('log.message.confirmDeletion'), this.$t('log.message.prompt'), {
+        type: 'warning'
+      }).then(async() => {
+        this.loading = true
+        let msg = ''
+        try {
+          const { message } = await batchDeleteOperationLogByIds({ operationLogIds: [] })
+          msg = message
+        } finally {
+          this.loading = false
+        }
+
+        this.getTableData()
+        this.$message({
+          showClose: true,
+          message: msg,
+          type: 'success'
+        })
+      }).catch(() => {
+        this.$message({
+          showClose: true,
+          type: 'info',
+          message: this.$t('log.message.cancelDelete')
+        })
+      })
+    },
+
+    // Form Multiple Choice
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
 
-    // 单个删除
+    // Single delete
     async singleDelete(Id) {
       this.loading = true
       let msg = ''
@@ -206,7 +241,7 @@ export default {
       })
     },
 
-    // 分页
+    // Page Break
     handleSizeChange(val) {
       this.params.pageSize = val
       this.getTableData()
