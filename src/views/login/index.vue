@@ -135,11 +135,11 @@ mwIDAQAB
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          // 密码RSA加密处理
+          // Cipher RSA encryption processing
           const encryptor = new JSEncrypt()
-          // 设置公钥
+          // Setting the public key
           encryptor.setPublicKey(this.publicKey)
-          // 加密密码
+          // encrypted password
           const encPassword = encryptor.encrypt(this.loginForm.password)
           const encLoginForm = { username: this.loginForm.username, password: encPassword }
           this.$store.dispatch('user/login', encLoginForm)
@@ -174,7 +174,7 @@ mwIDAQAB
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
+/* Fix input background inconsistency and cursor color change. */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#5c646d;

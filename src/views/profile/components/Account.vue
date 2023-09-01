@@ -77,10 +77,13 @@ export default {
         ]
       },
       publicKey: `-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbOYcY8HbDaNM9ooYXoc9s+R5o
-R05ZL1BsVKadQBgOVH/kj7PQuD+ABEFVgB6rJNi287fRuZeZR+MCoG72H+AYsAhR
-sEaB5SuI7gDEstXuTyjhx5bz0wUujbDK4VMgRfPO6MQo+A0c95OadDEvEQDG3KBQ
-wLXapv+ZfsjG7NgdawIDAQAB
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsfk9FP4ZeVLYSzRMJpv4
+MSzm1WzM+3c9zfi98ldcLa7aQADzDi7vnk0TqXNMPY2r5Dmykrvf6HtC8DCEg01b
+oBapvkfJy0KdQ1XbGihOGrZKMqCvS6DUx8Gt1osc7ag13GcQC/pI+VNMrNO1wuZX
+veGEKsd6K8sw8Xc8DtyJMr2m/GVZftWSzzDu6/dHWFglFQ5nbLogiA7PDJc9m3Pu
+cMOWfHEHkeymvRTnTD0FlqjpWL7Dr42CdqtUqL4abQW6xJcbde5ow1SXzznO240m
+5xDTnBxS5gh+uvz6NzENc2JUX1fP7W9zYwvV7/PMNoi47gQ61O5sp/H+vpmyXyV+
+mwIDAQAB
 -----END PUBLIC KEY-----`,
       passwordTypeOld: 'password',
       passwordTypeNew: 'password',
@@ -93,11 +96,11 @@ wLXapv+ZfsjG7NgdawIDAQAB
         if (valid) {
           this.dialogFormDataCopy = { ...this.dialogFormData }
 
-          // 密码RSA加密处理
+          // Cipher RSA encryption processing
           const encryptor = new JSEncrypt()
-          // 设置公钥
+          // Setting the public key
           encryptor.setPublicKey(this.publicKey)
-          // 加密密码
+          // encrypted password
           const oldPasswd = encryptor.encrypt(this.dialogFormData.oldPassword)
           const newPasswd = encryptor.encrypt(this.dialogFormData.newPassword)
           const confirmPasswd = encryptor.encrypt(this.dialogFormData.confirmPassword)
@@ -122,10 +125,10 @@ wLXapv+ZfsjG7NgdawIDAQAB
             message: this.$t('profile.message.passwordChangedLoginAgain'),
             type: 'success'
           })
-          // 重新登录
+          // log back in
           setTimeout(() => {
             store.dispatch('user/logout').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
+              location.reload() // To re-instantiate the vue-router object Avoiding bugs
             })
           }, 1500)
         } else {
