@@ -26,9 +26,9 @@
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">{{ $t('normal.create') }}</el-button>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>-->
+        <!--        </el-form-item>-->
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
@@ -68,7 +68,7 @@
         @current-change="handleCurrentChange"
       />
 
-      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
+      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
           <el-form-item :label="$t('system.api.path')" prop="path">
             <el-input v-model.trim="dialogFormData.path" :placeholder="$t('system.api.path')" />

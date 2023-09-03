@@ -39,7 +39,7 @@
       </el-tab-pane>
     </el-tabs>
     <!--  Dialog-->
-    <el-dialog :title="$t('normal.create')+'PreAuthKey'" :visible.sync="preAuthKeyVisible" width="30%">
+    <el-dialog :title="$t('normal.create')+'PreAuthKey'" :visible.sync="preAuthKeyVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
       <el-form size="small" label-width="100px" :rules="preAuthKeysDialog.rule()">
         <el-form-item :label="$t('normal.expireTime')">
           <el-date-picker
@@ -122,11 +122,6 @@ import { UtilsDateFormat } from '@/utils/date'
 
 export default {
   name: 'Setting',
-  computed: {
-    UtilsDateFormat() {
-      return UtilsDateFormat
-    }
-  },
   // components: { CardTab, Card, Tab },
   data() {
     return {
@@ -156,6 +151,11 @@ export default {
         // eslint-disable-next-line no-undef
         preAuthKey: new PreAuthKey()
       }
+    }
+  },
+  computed: {
+    UtilsDateFormat() {
+      return UtilsDateFormat
     }
   },
   created() {

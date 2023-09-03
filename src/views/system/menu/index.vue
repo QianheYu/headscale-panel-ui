@@ -5,10 +5,10 @@
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">{{ $t('normal.create') }}</el-button>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
-<!--            {{ $t('normal.delete') }}</el-button>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
+        <!--            {{ $t('normal.delete') }}</el-button>-->
+        <!--        </el-form-item>-->
       </el-form>
 
       <el-table v-loading="loading" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="ID" :data="tableData" stripe style="width: 100%" @selection-change="handleSelectionChange">
@@ -50,7 +50,7 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" width="580px">
+      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
         <el-form ref="dialogForm" :inline="true" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="80px">
           <el-form-item :label="$t('system.menu.title')" prop="title">
             <el-input v-model.trim="dialogFormData.title" :placeholder="$t('system.menu.title')+'(title)'" style="width: 440px" />

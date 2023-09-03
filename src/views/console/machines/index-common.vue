@@ -43,17 +43,17 @@
             <div>{{ scope.row.user.name }}</div>
           </template>
         </el-table-column>
-<!--        <el-table-column show-overflow-tooltip sortable prop="user.name" label="Creator" align="center">-->
+        <!--        <el-table-column show-overflow-tooltip sortable prop="user.name" label="Creator" align="center">-->
         <el-table-column fixed="right" align="left">
           <template v-slot="scope">
             <el-dropdown trigger="click" @command="operate($event, scope.row)">
               <span class="el-dropdown-link" style="color: #1890ff;">
-<!--                操作-->
+                <!--                操作-->
                 <i class="el-icon el-icon-more" />
               </span>
               <el-dropdown-menu v-slot="dropdown">
-<!--                <el-dropdown-item v-if="permission" command="tags"><i class="el-icon-price-tag el-icon" />标签</el-dropdown-item>-->
-<!--                <el-dropdown-item v-if="permission" command="move"><i class="el-icon-rank el-icon" />移动</el-dropdown-item>-->
+                <!--                <el-dropdown-item v-if="permission" command="tags"><i class="el-icon-price-tag el-icon" />标签</el-dropdown-item>-->
+                <!--                <el-dropdown-item v-if="permission" command="move"><i class="el-icon-rank el-icon" />移动</el-dropdown-item>-->
                 <el-dropdown-item command="expire"><i class="el-icon el-icon-refresh" />{{ $t('normal.expire') }}</el-dropdown-item>
                 <el-dropdown-item command="delete" style="color: red"><i class="el-icon-delete el-icon" />{{ $t('normal.delete') }}</el-dropdown-item>
               </el-dropdown-menu>
@@ -62,8 +62,8 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <!--    手动添加、注册设备对话框-->
-    <el-dialog :title="$t('console.machines.registerMachine')" :visible.sync="registerMachineVisible">
+    <!--    Manual Add, Register Device dialog box -->
+    <el-dialog :title="$t('console.machines.registerMachine')" :visible.sync="registerMachineVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
       <el-form size="small" label-width="100px">
         <el-form-item :label="$t('console.machines.nodekey')">
           <el-input v-model="nodekey" size="small" />
@@ -74,7 +74,7 @@
         <el-button size="mini" type="primary" @click="registerMachine">{{ $t('normal.ok') }}</el-button>
       </div>
     </el-dialog>
-    <!--    设备详细信息对话框-->
+    <!--    Device Details dialog box -->
     <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false">
       <el-descriptions class="margin-top" :column="2" border>
         <el-descriptions-item :label="$t('console.machines.machine')">
@@ -97,13 +97,13 @@
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.tag')">
           <el-select v-model="info.forced_tags" size="small" multiple filterable allow-create disabled>
-<!--            <template v-for="tag in tags">-->
-<!--              <el-option :key="tag" :value="tag" :label="tag" />-->
-<!--            </template>-->
-<!--            <el-option v-for="tag in tags" :key="tag" :value="tag" :label="tag" />-->
+            <!--            <template v-for="tag in tags">-->
+            <!--              <el-option :key="tag" :value="tag" :label="tag" />-->
+            <!--            </template>-->
+            <!--            <el-option v-for="tag in tags" :key="tag" :value="tag" :label="tag" />-->
             <el-option v-for="tag in info.forced_tags" :key="tag" :value="tag" :label="tag" />
           </el-select>
-<!--          <div v-for="tag in info.forced_tags" :key="tag">{{ tag }}</div>-->
+          <!--          <div v-for="tag in info.forced_tags" :key="tag">{{ tag }}</div>-->
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.lastSeen')">
           <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? 'Connected': UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
@@ -132,10 +132,10 @@
       </el-descriptions>
     </el-dialog>
 
-    <!--    设备标签对话框-->
-    <el-dialog :title="'Set Tags ' + setTagDialog.machine.given_name" :visible.sync="setTagVisible">
+    <!--    Device Labeling dialog box -->
+    <el-dialog :title="'Set Tags ' + setTagDialog.machine.given_name" :visible.sync="setTagVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
       <el-form v-model="setTagDialog.machine">
-<!--        <el-form-item label="Name"><el-input v-model.trim="machine.given_name" label="Name" /></el-form-item>-->
+        <!--        <el-form-item label="Name"><el-input v-model.trim="machine.given_name" label="Name" /></el-form-item>-->
         <el-form-item label="Tags">
           <el-select v-model.trim="setTagDialog.machine.forced_tags" filterable allow-create multiple placeholder="Please Choose ACL Tags" style="width:100%">
             <el-option
@@ -152,8 +152,8 @@
         <el-button type="primary" size="small" @click="updateTags">{{ $t('normal.ok') }}</el-button>
       </div>
     </el-dialog>
-    <!--    移动设备对话框-->
-    <el-dialog :title="$t('console.machines.moveMachine')+' ' + info.given_name" :visible.sync="moveMachineVisible">
+    <!--    Mobile Devices dialog box -->
+    <el-dialog :title="$t('console.machines.moveMachine')+' ' + info.given_name" :visible.sync="moveMachineVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
       <el-form>
         <el-select v-model="username" filterable remote :remote-method="searchUser" style="width: 100%">
           <el-option v-for="user in users" :key="user.username" :value="user.username">{{ user.username }}</el-option>

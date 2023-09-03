@@ -20,10 +20,10 @@
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">{{ $t('normal.create') }}</el-button>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
-<!--            {{ $t('normal.delete') }}</el-button>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">-->
+        <!--            {{ $t('normal.delete') }}</el-button>-->
+        <!--        </el-form-item>-->
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" stripe style="width: 100%" @selection-change="handleSelectionChange">
@@ -67,13 +67,13 @@
         @current-change="handleCurrentChange"
       />
 
-      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" width="580px">
+      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
         <el-form ref="dialogForm" :inline="true" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="100px">
           <el-form-item :label="$t('system.roles.name')" prop="name">
-            <el-input v-model.trim="dialogFormData.name" :placeholder="$t('system.roles.name')" style="width: 420px" />
+            <el-input v-model.trim="dialogFormData.name" :placeholder="$t('system.roles.name')" :style="inputWidth" />
           </el-form-item>
           <el-form-item :label="$t('system.roles.keyword')" prop="keyword">
-            <el-input v-model.trim="dialogFormData.keyword" :placeholder="$t('system.roles.keyword')" style="width: 420px" />
+            <el-input v-model.trim="dialogFormData.keyword" :placeholder="$t('system.roles.keyword')" :style="inputWidth" />
           </el-form-item>
           <el-form-item :label="$t('system.roles.status')" prop="status">
             <el-select v-model.trim="dialogFormData.status" :placeholder="$t('system.roles.status')" style="width: 180px">
@@ -85,7 +85,7 @@
             <el-input-number v-model.number="dialogFormData.sort" controls-position="right" :min="1" :max="999" />
           </el-form-item>
           <el-form-item :label="$t('system.roles.desc')" prop="desc">
-            <el-input v-model.trim="dialogFormData.desc" style="width: 420px" type="textarea" :placeholder="$t('system.roles.desc')" show-word-limit maxlength="100" />
+            <el-input v-model.trim="dialogFormData.desc" :style="inputWidth" type="textarea" :placeholder="$t('system.roles.desc')" show-word-limit maxlength="100" />
           </el-form-item>
         </el-form>
         <div slot="footer">
@@ -94,7 +94,7 @@
         </div>
       </el-dialog>
 
-      <el-dialog :title="$t('system.roles.permsDialog.title')" :visible.sync="permsDialogVisible" width="580px" custom-class="perms-dialog">
+      <el-dialog :title="$t('system.roles.permsDialog.title')" :visible.sync="permsDialogVisible" custom-class="perms-dialog" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
         <el-tabs>
           <el-tab-pane>
             <span slot="label"><svg-icon icon-class="menu1" class-name="role-menu" /> {{ $t('system.roles.permsDialog.menu') }}</span>
@@ -144,6 +144,7 @@ export default {
   name: 'Role',
   data() {
     return {
+      inputWidth: this.$device.mobile ? '' : 'width: 420px;',
       // search param
       params: {
         name: '',

@@ -78,7 +78,7 @@
         @current-change="handleCurrentChange"
       />
 
-      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" width="30%">
+      <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="100px">
           <el-form-item :label="$t('account.username')" prop="username">
             <el-input ref="password" v-model.trim="dialogFormData.username" :placeholder="$t('account.username')" />
