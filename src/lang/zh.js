@@ -412,7 +412,12 @@ export default {
     },
     acl: {
       title: '权限管理',
-      save: '保存'
+      save: '保存',
+      message: {
+        saveACLSuccess: '保存成功',
+        prompt: '注意',
+        confirmSaveACL: '此操作将重启Headscale后端, 是否继续?'
+      }
     },
     settings: {
       preAuthKey: {

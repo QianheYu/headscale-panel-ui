@@ -416,7 +416,12 @@ export default {
     },
     acl: {
       title: 'Access Control',
-      save: 'Save'
+      save: 'Save',
+      message: {
+        saveACLSuccess: 'Save Success',
+        prompt: 'Prompt',
+        confirmSaveACL: 'This will restart the Headscale backend, continue?'
+      }
     },
     settings: {
       preAuthKey: {
