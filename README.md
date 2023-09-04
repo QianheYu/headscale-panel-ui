@@ -14,6 +14,9 @@ If there is an architecture that doesn't fit or changes are significant, I will 
 3. Edit the `.env.production` with your backend host and port
 4. Build `npm run build:prod`
 
+> Note: If you encounter the following problem, please execute the command `export NODE_OPTIONS=--openssl-legacy-provider` before executing step 4.  
+![image](./docs/images/ERR_OSSL_EVP_UNSUPPORTED.png)
+
 ## Deployment
 Copy files in `dist` to your web server
 
