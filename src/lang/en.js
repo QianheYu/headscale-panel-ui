@@ -87,7 +87,8 @@ export default {
     password: 'Password',
     role: 'Role',
     permission: 'Permission',
-    introduction: 'Introduction'
+    introduction: 'Introduction',
+    avatar: 'Avatar'
   },
   login: {
     jwtFailed: 'JWT authentication failed',

@@ -114,6 +114,9 @@
               <el-option :label="$t('normal.disable')" :value="2" />
             </el-select>
           </el-form-item>
+          <el-form-item :label="$t('account.avatar')" prop="avatar">
+            <el-input v-model.trim="dialogFormData.avatar" :placeholder="$t('account.avatar')" />
+          </el-form-item>
           <el-form-item :label="$t('normal.describe')" prop="introduction">
             <el-input v-model.trim="dialogFormData.introduction" type="textarea" :placeholder="$t('account.introduction')" show-word-limit maxlength="100" />
           </el-form-item>
@@ -301,6 +304,7 @@ mwIDAQAB
       this.dialogFormData.email = row.email
       this.dialogFormData.introduction = row.introduction
       this.dialogFormData.roleIds = row.roleIds
+      this.dialogFormData.avatar = row.avatar
 
       this.dialogFormTitle = this.$t('system.users.dialog.edit')
       this.dialogType = 'update'

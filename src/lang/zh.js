@@ -87,7 +87,8 @@ export default {
     password: '密码',
     role: '角色',
     permission: '权限',
-    introduction: '简介'
+    introduction: '简介',
+    avatar: '头像'
   },
   login: {
     jwtFailed: 'JWT认证失败',
