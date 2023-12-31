@@ -216,9 +216,12 @@ export default {
     this.getTableData()
     // this.sortMachines()
     this.searchUser()
-    setInterval(() => {
+    this.polling = setInterval(() => {
       this.getTableData()
     }, 60000)
+  },
+  beforeDestroy() {
+    clearInterval(this.polling)
   },
   methods: {
     sortMachines() {
@@ -250,7 +253,7 @@ export default {
     },
     async updateTags() {
       if (!this.setTagDialog.machine.forced_tags.every((str) => str.startsWith('tag:'))) {
-        this.$message.error(this.$t('console.machines.deviceTagMustStartWithTag'))
+        this.$message.error(this.$t('console.machines.message.deviceTagMustStartWithTag'))
         return
       }
       const { code, message } = await updateTags({ machine_id: this.setTagDialog.machine.id, tags: this.setTagDialog.machine.forced_tags })

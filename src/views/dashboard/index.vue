@@ -47,9 +47,12 @@ export default {
   created() {
     this.getSystemInfo()
     this.getStatus()
-    setInterval(() => {
+    this.polling = setInterval(() => {
       this.getStatus()
     }, 2000)
+  },
+  beforeDestroy() {
+    clearInterval(this.polling)
   },
   methods: {
     async getSystemInfo() {
