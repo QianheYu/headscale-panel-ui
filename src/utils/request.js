@@ -1,9 +1,8 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
-// import router from '@/router'
-import { getToken } from '@/utils/auth'
 import router from '@/router'
+import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
@@ -77,7 +76,9 @@ service.interceptors.response.use(
         return Promise.reject(error)
       }
     } else if (error.response.status === 403) {
-      router.push({ path: '/401' })
+      store.dispatch('user/resetToken')
+      router.push({path: '/login'})
+      // router.push({ path: '/401' })
     } else {
       Message({
         showClose: true,
