@@ -52,8 +52,8 @@
                 <i class="el-icon el-icon-more" />
               </span>
               <el-dropdown-menu v-slot="dropdown">
-                <!--                <el-dropdown-item v-if="permission" command="tags"><i class="el-icon-price-tag el-icon" />标签</el-dropdown-item>-->
-                <!--                <el-dropdown-item v-if="permission" command="move"><i class="el-icon-rank el-icon" />移动</el-dropdown-item>-->
+                <!--                <el-dropdown-item v-if="permission" command="tags"><i class="el-icon-price-tag el-icon" />{{ $t('normal.tag') }}</el-dropdown-item>-->
+                <!--                <el-dropdown-item v-if="permission" command="move"><i class="el-icon-rank el-icon" />{{ $t('normal.move') }}</el-dropdown-item>-->
                 <el-dropdown-item command="expire"><i class="el-icon el-icon-refresh" />{{ $t('normal.expire') }}</el-dropdown-item>
                 <el-dropdown-item command="delete" style="color: red"><i class="el-icon-delete el-icon" />{{ $t('normal.delete') }}</el-dropdown-item>
               </el-dropdown-menu>
@@ -75,7 +75,7 @@
       </div>
     </el-dialog>
     <!--    Device Details dialog box -->
-    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false">
+    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false;routes=[]">
       <el-descriptions class="margin-top" :column="2" border>
         <el-descriptions-item :label="$t('console.machines.machine')">
           <template v-if="!renameButton">{{ info.given_name }}</template>
@@ -106,13 +106,13 @@
           <!--          <div v-for="tag in info.forced_tags" :key="tag">{{ tag }}</div>-->
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.lastSeen')">
-          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? 'Connected': UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? $t('console.machines.connected'): UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.update')">
-          <el-tag size="small" :type="info.online?'success':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.last_successful_update).toDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online?'success':'danger'">{{ typeof info.last_successful_update === "undefined"? 'No Data':UtilsDateFormat.fromTimeStamp(info.last_successful_update).toDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.expireTime')">
-          <el-tag size="small" :type="UtilsDateFormat.fromTimeStamp(info.expiry).after()?'primary':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.expiry).isMin()?'永不过期':UtilsDateFormat.fromTimeStamp(info.expiry).toDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="UtilsDateFormat.fromTimeStamp(info.expiry).after()?'primary':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.expiry).isMin()?$t('console.machines.neverExpire'):UtilsDateFormat.fromTimeStamp(info.expiry).toDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.registerMethod')">
           <el-tag v-if="'register_method' in info" size="small" type="success">{{ info.register_method }}</el-tag>
@@ -266,7 +266,7 @@ export default {
         this.$message.error(this.$t('console.machines.message.deviceTagMustStartWithTag'))
         return
       }
-      const { code, message } = await updateTags({ machine_id: this.setTagDialog.machine.id, tags: this.setTagDialog.machine.forced_tags })
+      const { code, message } = await updateTags({ node_id: this.setTagDialog.machine.id, tags: this.setTagDialog.machine.forced_tags })
       if (code !== 200) {
         this.$message.error(message)
         return
@@ -293,7 +293,7 @@ export default {
       }
     },
     async renameMachine(id, name) {
-      const { code, message } = await postMachine({ state: 'rename', name: name, machine_id: id })
+      const { code, message } = await postMachine({ state: 'rename', name: name, node_id: id })
       if (code !== 200) {
         this.$message.error(message)
       }
@@ -305,7 +305,7 @@ export default {
       this.setTagVisible = true
     },
     async expireMachine(id) {
-      const { code, message } = await postMachine({ state: 'expire', name: 'lowercase', machine_id: id })
+      const { code, message } = await postMachine({ state: 'expire', name: 'lowercase', node_id: id })
       if (code !== 200) {
         this.$message.error(message)
         return
@@ -317,7 +317,7 @@ export default {
         this.$message.error(this.$t('console.machines.message.userNotSelectOrNotExist'))
         return
       }
-      const { code, data, message } = await moveMachine({ user: this.username, machine_id: this.info.id })
+      const { code, data, message } = await moveMachine({ user: this.username, node_id: this.info.id })
       if (code !== 200) {
         this.$message.error(message)
         return
@@ -336,7 +336,7 @@ export default {
       this.$confirm(this.$t('console.machines.message.confirmDeletion'), this.$t('console.machines.message.prompt'), {
         type: 'warning'
       }).then(async() => {
-        const { code, message } = await deleteMachine({ machine_id: id })
+        const { code, message } = await deleteMachine({ node_id: id })
         if (code !== 200) {
           this.$message({ type: 'error', message: message })
         } else {
@@ -354,7 +354,7 @@ export default {
       })
     },
     async registerMachine() {
-      const { code, message } = await postMachine({ state: 'register', nodekey: this.nodekey, machine_id: 0 })
+      const { code, message } = await postMachine({ state: 'register', nodekey: this.nodekey, node_id: 0 })
       if (code !== 200) {
         this.$message.error(message)
         return

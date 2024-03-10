@@ -77,6 +77,11 @@ export default {
       }
     }
   },
+  navbar: {
+    language: '更改语言',
+    size: '文字大小',
+    client: '下载客户端'
+  },
   account: {
     user: '用户',
     username: '用户名',

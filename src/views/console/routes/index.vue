@@ -37,15 +37,15 @@
         <el-table-column show-overflow-tooltip sortable prop="prefix" :label="$t('console.routes.route')" align="center" />
         <el-table-column show-overflow-tooltip sortable label="Via" align="center">
           <template v-slot="scope">
-            <div v-for="ip in scope.row.machine.ip_addresses" :key="ip">{{ ip }}</div>
+            <div v-for="ip in scope.row.node.ip_addresses" :key="ip">{{ ip }}</div>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="machine.given_name" :label="$t('console.routes.machine')" align="center" />
-        <el-table-column show-overflow-tooltip sortable prop="machine.name" :label="$t('console.routes.hostname')" align="center" />
+        <el-table-column show-overflow-tooltip sortable prop="node.given_name" :label="$t('console.routes.machine')" align="center" />
+        <el-table-column show-overflow-tooltip sortable prop="node.name" :label="$t('console.routes.hostname')" align="center" />
         <el-table-column show-overflow-tooltip sortable :label="$t('console.routes.lastSeen')" align="center">
           <template v-slot="scope">
-            <el-tag size="small" :type="scope.row.machine.online ? 'success':'danger'">
-              {{ scope.row.machine.online === true ? $t('console.routes.connected'): 'expiry' in scope.row.machine ? UtilsDateFormat.fromTimeStamp(scope.row.machine.last_seen).toAfterDateTimeString():$t('console.routes.disconnected') }}
+            <el-tag size="small" :type="(typeof scope.row.node.online === 'undefined' ? scope.row.node.last_seen.seconds +60 >= Date.now()/1000 :scope.row.node.online) ? 'success':'danger'">
+              {{ scope.row.node.online === true ? $t('console.routes.connected'): 'expiry' in scope.row.node ? UtilsDateFormat.fromTimeStamp(scope.row.node.last_seen).toAfterDateTimeString():$t('console.routes.disconnected') }}
             </el-tag>
           </template>
         </el-table-column>
@@ -56,10 +56,7 @@
         </el-table-column>
         <el-table-column show-overflow-tooltip :label="$t('normal.status')" align="center">
           <template v-slot="scope">
-            <el-tooltip v-if="!scope.row.advertised || !('online' in scope.row.machine)" class="item" effect="dark" :content="$t('console.routes.message.routeUnavailable')" placement="top">
-              <el-switch v-model="scope.row.enabled" :disabled="!scope.row.advertised || !('online' in scope.row.machine)" active-color="#13ce66" inactive-color="#ff4949" @change="submit($event, scope)" />
-            </el-tooltip>
-            <el-switch v-else v-model="scope.row.enabled" :disabled="!scope.row.advertised || !('online' in scope.row.machine)" active-color="#13ce66" inactive-color="#ff4949" @change="submit($event, scope)" />
+            <el-switch v-model="scope.row.enabled" active-color="#13ce66" inactive-color="#ff4949" @change="submit($event, scope)" />
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip align="center">
@@ -104,7 +101,7 @@ export default {
   methods: {
     async getTableData() {
       this.loading = true
-      const { code, data, message } = await getRoute({ machine_id: 0 })
+      const { code, data, message } = await getRoute({ node_id: 0 })
       this.loading = false
       if (code !== 200) {
         this.$message.error(message)

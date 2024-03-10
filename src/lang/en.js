@@ -77,6 +77,11 @@ export default {
       }
     }
   },
+  navbar: {
+    language: 'Language',
+    size: 'Global Size',
+    client: 'Download Client'
+  },
   account: {
     user: 'User',
     username: 'User Name',

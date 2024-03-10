@@ -13,11 +13,11 @@
 
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-          <el-tooltip content="Global Size" effect="dark" placement="bottom">
+          <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
             <size-select id="size-select" class="right-menu-item hover-effect" />
           </el-tooltip>
 
-          <el-tooltip content="Language" effect="dark" placement="bottom">
+          <el-tooltip :content="$t('navbar.language')" effect="dark" placement="bottom">
             <lang-select id="lang-select" class="right-menu-item hover-effect" />
           </el-tooltip>
         </template>
@@ -28,13 +28,16 @@
             <i class="el-icon-caret-bottom" />
           </div>
           <el-dropdown-menu slot="dropdown">
-            <router-link to="/profile/index">
-              <el-dropdown-item>{{ $t('pageName.profile') }}</el-dropdown-item>
-            </router-link>
             <router-link to="/">
               <el-dropdown-item>{{ $t('pageName.home') }}</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/gnimli/go-web-mini/">
+            <router-link to="/profile/index">
+              <el-dropdown-item>{{ $t('pageName.profile') }}</el-dropdown-item>
+            </router-link>
+            <a target="_blank" href="https://tailscale.com/download">
+              <el-dropdown-item>{{ $t('navbar.client') }}</el-dropdown-item>
+            </a>
+            <a target="_blank" href="https://github.com/QianheYu/headscale-panel-ui/">
               <el-dropdown-item>Github</el-dropdown-item>
             </a>
             <el-dropdown-item divided @click.native="logout">
@@ -63,7 +66,6 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
-import { UtilEventSource } from '@/utils/event-source'
 
 export default {
   name: 'Navbar',

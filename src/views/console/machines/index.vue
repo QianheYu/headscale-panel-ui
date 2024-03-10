@@ -73,7 +73,7 @@
         <el-button size="mini" type="primary" @click="registerMachine">{{ $t('normal.ok') }}</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false">
+    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false;routes=[]">
       <el-descriptions class="margin-top" :column="2" border>
         <el-descriptions-item :label="$t('console.machines.machine')">
           <template v-if="!renameButton">{{ info.given_name }}</template>
@@ -104,10 +104,10 @@
           <!--          <div v-for="tag in info.forced_tags" :key="tag">{{ tag }}</div>-->
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.lastSeen')">
-          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? 'Connected': UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? $t('console.machines.connected'): UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.update')">
-          <el-tag size="small" :type="info.online?'success':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.last_successful_update).toDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online?'success':'danger'">{{ typeof info.last_successful_update === "undefined" ? 'No Data' : UtilsDateFormat.fromTimeStamp(info.last_successful_update).toDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.expireTime')">
           <el-tag size="small" :type="UtilsDateFormat.fromTimeStamp(info.expiry).after()?'primary':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.expiry).isMin()?$t('console.machines.neverExpire'):UtilsDateFormat.fromTimeStamp(info.expiry).toDateTimeString() }}</el-tag>
@@ -256,7 +256,7 @@ export default {
         this.$message.error(this.$t('console.machines.message.deviceTagMustStartWithTag'))
         return
       }
-      const { code, message } = await updateTags({ machine_id: this.setTagDialog.machine.id, tags: this.setTagDialog.machine.forced_tags })
+      const { code, message } = await updateTags({ node_id: this.setTagDialog.machine.id, tags: this.setTagDialog.machine.forced_tags })
       if (code !== 200) {
         this.$message.error(message)
         return
@@ -283,7 +283,7 @@ export default {
       }
     },
     async renameMachine(id, name) {
-      const { code, message } = await postMachine({ state: 'rename', name: name, machine_id: id })
+      const { code, message } = await postMachine({ state: 'rename', name: name, node_id: id })
       if (code !== 200) {
         this.$message.error(message)
       }
@@ -295,7 +295,7 @@ export default {
       this.setTagVisible = true
     },
     async expireMachine(id) {
-      const { code, message } = await postMachine({ state: 'expire', name: '', machine_id: id })
+      const { code, message } = await postMachine({ state: 'expire', name: '', node_id: id })
       if (code !== 200) {
         this.$message.error(message)
         return
@@ -307,13 +307,14 @@ export default {
         this.$message.error(this.$t('console.machines.message.userNotSelectOrNotExist'))
         return
       }
-      const { code, data, message } = await moveMachine({ user: this.username, machine_id: this.info.id })
+      const { code, data, message } = await moveMachine({ user: this.username, node_id: this.info.id })
       if (code !== 200) {
         this.$message.error(message)
         return
       }
       this.info = data
       this.moveMachineVisible = false
+      this.getTableData()
     },
     async switchRoute(event, index) {
       const { code, message } = await switchRoute({ route_id: this.routes[index].id, enable: event })
@@ -326,7 +327,7 @@ export default {
       this.$confirm(this.$t('console.machines.message.confirmDeletion'), this.$t('console.machines.message.prompt'), {
         type: 'warning'
       }).then(async() => {
-        const { code, message } = await deleteMachine({ machine_id: id })
+        const { code, message } = await deleteMachine({ node_id: id })
         if (code !== 200) {
           this.$message({ type: 'error', message: message })
         } else {

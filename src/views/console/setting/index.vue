@@ -47,6 +47,7 @@
             type="datetime"
             :picker-options="pickerOptions"
             :placeholder="$t('console.settings.preAuthKey.chooseDate')"
+            align="bottom"
           />
         </el-form-item>
         <el-form-item>
@@ -132,12 +133,13 @@ export default {
       notKeys: [],
       preAuthKeysDialog: new NewPreAuthKey(),
       pickerOptions: {
-        // shortcuts: [{
-        //   text: '用不过期',
-        //   onClick(picker) {
-        //     picker.$emit('pick', new Date(0))
-        //   }
-        // }],
+        shortcuts: [{
+          text: '2099',
+          onClick(picker) {
+            // -62135596800
+            picker.$emit('pick', new Date(4102415999000))
+          }
+        }],
         disabledDate(time) {
           return time.getTime() < (Date.now() - 24 * 60 * 60 * 1000)
         }
