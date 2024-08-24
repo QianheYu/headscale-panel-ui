@@ -42,6 +42,7 @@
 import { changePwd } from '@/api/system/user'
 import store from '@/store'
 import JSEncrypt from 'jsencrypt'
+import { publicKey } from '@/vendor/publickey'
 
 export default {
   data() {
@@ -76,15 +77,7 @@ export default {
           { required: true, validator: confirmPass, trigger: 'blur' }
         ]
       },
-      publicKey: `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsfk9FP4ZeVLYSzRMJpv4
-MSzm1WzM+3c9zfi98ldcLa7aQADzDi7vnk0TqXNMPY2r5Dmykrvf6HtC8DCEg01b
-oBapvkfJy0KdQ1XbGihOGrZKMqCvS6DUx8Gt1osc7ag13GcQC/pI+VNMrNO1wuZX
-veGEKsd6K8sw8Xc8DtyJMr2m/GVZftWSzzDu6/dHWFglFQ5nbLogiA7PDJc9m3Pu
-cMOWfHEHkeymvRTnTD0FlqjpWL7Dr42CdqtUqL4abQW6xJcbde5ow1SXzznO240m
-5xDTnBxS5gh+uvz6NzENc2JUX1fP7W9zYwvV7/PMNoi47gQ61O5sp/H+vpmyXyV+
-mwIDAQAB
------END PUBLIC KEY-----`,
+      publicKey: publicKey,
       passwordTypeOld: 'password',
       passwordTypeNew: 'password',
       passwordTypeConfirm: 'password'
