@@ -1,8 +1,9 @@
 import { constantRoutes } from '@/router'
 import { getUserMenuTreeByUserId } from '@/api/system/menu'
 import Layout from '@/layout'
+// eslint-disable-next-line no-unused-vars
 var deep = 1
-var varRoutes = constantRoutes
+// var varRoutes = constantRoutes
 
 export const loadComponent = (component) => {
   if (component === '' || component === 'Layout') {

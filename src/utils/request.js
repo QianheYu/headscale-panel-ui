@@ -77,7 +77,7 @@ service.interceptors.response.use(
       }
     } else if (error.response.status === 403) {
       store.dispatch('user/resetToken')
-      router.push({path: '/login'})
+      router.push({ path: '/login' })
       // router.push({ path: '/401' })
     } else {
       Message({
