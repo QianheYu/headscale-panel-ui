@@ -1,5 +1,6 @@
 export default {
   datetime: {
+    ago: ' ago',
     seconds: 'seconds',
     minutes: 'minutes',
     hours: 'hours',
@@ -32,6 +33,7 @@ export default {
     }
   },
   normal: {
+    nodata: 'No Data',
     time: 'Time',
     date: 'Date',
     datetime: 'DateTime',
@@ -371,6 +373,13 @@ export default {
       machine: 'Machine',
       hostname: 'Hostname',
       registerMethod: 'Register Method',
+      registerMethodType: ['unspecified', 'authkey', 'cmd', 'oidc'],
+      // registerMethodType: {
+      //   unspecified: "unspecified",
+      //   authkey: "authkey",
+      //   cli: "command line",
+      //   oidc: "oidc",
+      // },
       preAuthKey: 'PreAuthKey',
       route: 'Route',
       setTags: 'Set Tags',
@@ -423,6 +432,7 @@ export default {
     acl: {
       title: 'Access Control',
       save: 'Save',
+      description: 'not set or error encountered',
       message: {
         saveACLSuccess: 'Save Success',
         prompt: 'Prompt',
@@ -438,6 +448,7 @@ export default {
         used: 'Used',
         reUsable: 'Reusable',
         ephemeral: 'Ephemeral',
+        ephemeralTooltip: 'Automatically remove the device from your tailnet when it goes offline.',
         deviceTagMustStartWithTag: 'The device tag must start with tag:',
         copySucceeded: 'Copy Succeeded',
         copyFailed: 'Copy Failed'

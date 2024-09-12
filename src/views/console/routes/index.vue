@@ -45,7 +45,7 @@
         <el-table-column show-overflow-tooltip sortable :label="$t('console.routes.lastSeen')" align="center">
           <template v-slot="scope">
             <el-tag size="small" :type="(typeof scope.row.node.online === 'undefined' ? scope.row.node.last_seen.seconds +60 >= Date.now()/1000 :scope.row.node.online) ? 'success':'danger'">
-              {{ scope.row.node.online === true ? $t('console.routes.connected'): 'expiry' in scope.row.node ? UtilsDateFormat.fromTimeStamp(scope.row.node.last_seen).toAfterDateTimeString():$t('console.routes.disconnected') }}
+              {{ scope.row.node.online === true ? $t('console.routes.connected'): 'expiry' in scope.row.node ? formatAfterDateTime(scope.row.node.last_seen):$t('console.routes.disconnected') }}
             </el-tag>
           </template>
         </el-table-column>
@@ -71,7 +71,7 @@
 
 <script>
 import { deleteRoute, getRoute, switchRoute } from '@/api/console/routes'
-import { UtilsDateFormat as UtilDateTimeFormat, UtilsDateFormat } from '@/utils/date'
+import { formatAfterDateTime, UtilsDateFormat } from '@/utils/date'
 
 export default {
   name: 'Routes',
@@ -88,9 +88,6 @@ export default {
     }
   },
   computed: {
-    UtilDateTimeFormat() {
-      return UtilDateTimeFormat
-    },
     UtilsDateFormat() {
       return UtilsDateFormat
     }
@@ -99,6 +96,7 @@ export default {
     this.getTableData()
   },
   methods: {
+    formatAfterDateTime,
     async getTableData() {
       this.loading = true
       const { code, data, message } = await getRoute({ node_id: 0 })

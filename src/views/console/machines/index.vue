@@ -35,7 +35,7 @@
         <!--        <el-table-column show-overflow-tooltip sortable prop="os" label="OS" align="center" />-->
         <el-table-column show-overflow-tooltip sortable prop="lastSeen" :label="$t('console.machines.lastSeen')" align="center">
           <template v-slot="scope">
-            <el-tag size="small" :type="scope.row.online ? 'success':'danger'">{{ scope.row.online === true ? $t('console.machines.connected'): UtilDateFormat.fromTimeStamp(scope.row.last_seen).toAfterDateTimeString() }}</el-tag>
+            <el-tag size="small" :type="scope.row.online ? 'success':'danger'">{{ scope.row.online === true ? $t('console.machines.connected'): formatAfterDateTime(scope.row.last_seen) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip sortable prop="creator" :label="$t('console.machines.creator')" align="center">
@@ -73,7 +73,7 @@
         <el-button size="mini" type="primary" @click="registerMachine">{{ $t('normal.ok') }}</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'" @close="renameButton=false;routes=[]">
+    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '50%'" @close="renameButton=false;routes=[]">
       <el-descriptions class="margin-top" :column="$device.mobile || $device.ipad || $device.android ? 1 : 2" border>
         <el-descriptions-item :label="$t('console.machines.machine')">
           <template v-if="!renameButton">{{ info.given_name }}</template>
@@ -104,16 +104,16 @@
           <!--          <div v-for="tag in info.forced_tags" :key="tag">{{ tag }}</div>-->
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.lastSeen')">
-          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? $t('console.machines.connected'): UtilsDateFormat.fromTimeStamp(info.last_seen).toAfterDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online? 'success':'danger'">{{ info.online? $t('console.machines.connected'): formatAfterDateTime(info.last_seen) }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.update')">
-          <el-tag size="small" :type="info.online?'success':'danger'">{{ typeof info.last_successful_update === "undefined" ? 'No Data' : UtilsDateFormat.fromTimeStamp(info.last_successful_update).toDateTimeString() }}</el-tag>
+          <el-tag size="small" :type="info.online?'success':'danger'">{{ typeof info.last_successful_update === "undefined" ? this.$t('normal.nodata') : formatAfterDateTime(info.last_successful_update) }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('normal.expireTime')">
           <el-tag size="small" :type="UtilsDateFormat.fromTimeStamp(info.expiry).after()?'primary':'danger'">{{ UtilsDateFormat.fromTimeStamp(info.expiry).isMin()?$t('console.machines.neverExpire'):UtilsDateFormat.fromTimeStamp(info.expiry).toDateTimeString() }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item :label="$t('console.machines.registerMethod')">
-          <el-tag v-if="'register_method' in info" size="small" type="success">{{ info.register_method }}</el-tag>
+          <el-tag v-if="'register_method' in info" size="small" type="success">{{ this.$t('console.machines.registerMethodType')[info.register_method] }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item v-if="'pre_auth_key' in info" :label="$t('console.machines.preAuthKey')">
           <el-input size="small" :value="info.pre_auth_key.key" readonly />
@@ -167,7 +167,7 @@
 import { deleteMachine, getMachines, moveMachine, postMachine, updateTags } from '@/api/console/machines'
 import { Machine } from '@/views/console/machines/mixins/data'
 import { getRoute, switchRoute } from '@/api/console/routes'
-import { UtilsDateFormat as UtilDateFormat, UtilsDateFormat } from '@/utils/date'
+import { formatAfterDateTime, UtilsDateFormat } from '@/utils/date'
 import { getUsers } from '@/api/system/user'
 
 export default {
@@ -205,9 +205,6 @@ export default {
     }
   },
   computed: {
-    UtilDateFormat() {
-      return UtilDateFormat
-    },
     UtilsDateFormat() {
       return UtilsDateFormat
     }
@@ -224,6 +221,7 @@ export default {
     clearInterval(this.polling)
   },
   methods: {
+    formatAfterDateTime,
     sortMachines() {
       this.machines.sort((a, b) => a.given_name.localeCompare(b.given_name))
     },

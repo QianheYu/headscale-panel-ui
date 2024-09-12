@@ -13,15 +13,24 @@
             <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="preAuthKeyVisible = true">{{ $t('normal.create') }}</el-button>
           </el-form-item>
         </el-form>
-        <el-table v-loading="loading" :data="tableData" header-align="center" @row-click="handleClickRow">
-          <!--            <el-table-column show-overflow-tooltip sortable prop="id" label="ID" />-->
-          <el-table-column show-overflow-tooltip sortable prop="key" :label="$t('console.settings.preAuthKey.key')" align="center" />
+        <el-table v-loading="loading" :data="tableData" header-align="center" tooltip-effect="dark" @row-click="handleClickRow">
+          <el-table-column show-overflow-tooltip prop="key" :label="$t('console.settings.preAuthKey.key')" align="center" />
           <el-table-column v-slot="scope" show-overflow-tooltip :label="$t('console.settings.preAuthKey.reUsable')" align="center">
             <el-tag size="small" :type="scope.row.reusable?'success':'danger'">{{ scope.row.reusable?$t('normal.yes'):$t('normal.no') }}</el-tag>
           </el-table-column>
-          <el-table-column v-slot="scope" show-overflow-tooltip :label="$t('console.settings.preAuthKey.ephemeral')" align="center">
-            <el-tag size="small" :type="scope.row.ephemeral?'success':'danger'">{{ scope.row.ephemeral?$t('normal.yes'):$t('normal.no') }}</el-tag>
+          <el-table-column show-overflow-tooltip align="center">
+            <template slot="header">
+              <el-tooltip :content="$t('console.settings.preAuthKey.ephemeralTooltip')" placement="top">
+                <span>{{ this.$t('console.settings.preAuthKey.ephemeral') }}<i class="el-icon-question" /></span>
+              </el-tooltip>
+            </template>
+            <template v-slot="scope">
+              <el-tag size="small" :type="scope.row.used?'danger':'success'">{{ scope.row.used?$t('normal.no'):$t('normal.yes') }}</el-tag>
+            </template>
           </el-table-column>
+          <!--          <el-table-column v-slot="scope" show-overflow-tooltip :label="$t('console.settings.preAuthKey.ephemeral')" align="center">-->
+          <!--            <el-tag size="small" :type="scope.row.ephemeral?'success':'danger'">{{ scope.row.ephemeral?$t('normal.yes'):$t('normal.no') }}</el-tag>-->
+          <!--          </el-table-column>-->
           <el-table-column v-slot="scope" show-overflow-tooltip :label="$t('console.settings.preAuthKey.used')" align="center">
             <el-tag size="small" :type="scope.row.used?'success':'danger'">{{ scope.row.used?$t('normal.yes'):$t('normal.no') }}</el-tag>
           </el-table-column>
@@ -52,7 +61,11 @@
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="preAuthKeysDialog.reusable" :label="$t('console.settings.preAuthKey.reUsable')" />
-          <el-checkbox v-model="preAuthKeysDialog.ephemeral" :label="$t('console.settings.preAuthKey.ephemeral')" />
+          <el-checkbox v-model="preAuthKeysDialog.ephemeral">
+            <el-tooltip :content="$t('console.settings.preAuthKey.ephemeralTooltip')" placement="top">
+              <span>{{ this.$t('console.settings.preAuthKey.ephemeral') }}<i class="el-icon-question" /></span>
+            </el-tooltip>
+          </el-checkbox>
         </el-form-item>
         <el-form-item :label="'ACL'+$t('normal.tag')">
           <el-select v-model.trim="preAuthKeysDialog.acl_tags" multiple allow-create filterable placeholder="Please Choose ACL Tags" style="width:100%">

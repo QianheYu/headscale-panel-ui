@@ -1,5 +1,6 @@
 export default {
   datetime: {
+    ago: '前',
     seconds: '秒',
     minutes: '分',
     hours: '小时',
@@ -32,6 +33,7 @@ export default {
     }
   },
   normal: {
+    nodata: '暂无数据',
     time: '时间',
     date: '日期',
     datetime: '日期时间',
@@ -369,6 +371,13 @@ export default {
       machine: '设备',
       hostname: '主机名',
       registerMethod: '注册方式',
+      registerMethodType: ['未知', '令牌', '命令行', '登陆认证'],
+      // registerMethodType: {
+      //   unspecified: "未知",
+      //   authkey: "令牌",
+      //   cli: "命令行",
+      //   oidc: "登陆认证",
+      // },
       preAuthKey: 'PreAuthKey',
       route: '路由',
       setTags: '设置标签',
@@ -419,6 +428,7 @@ export default {
     acl: {
       title: '权限管理',
       save: '保存',
+      description: '未设置或遇到错误',
       message: {
         saveACLSuccess: '保存成功',
         prompt: '注意',
@@ -433,7 +443,8 @@ export default {
         chooseDate: '选择日期',
         used: '已使用',
         reUsable: '可重用',
-        ephemeral: 'Ephemeral',
+        ephemeral: '短暂的',
+        ephemeralTooltip: '当设备离线时，自动将其从尾网中删除',
         deviceTagMustStartWithTag: '设备标签必须以tag:开头',
         copySucceeded: '复制成功',
         copyFailed: '复制失败'

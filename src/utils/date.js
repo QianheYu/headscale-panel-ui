@@ -83,3 +83,27 @@ export function formatDuration(seconds) {
     return `${days} ${this.$t('datetime.days')}`
   }
 }
+
+export function formatAfterDateTime(timestamp = { seconds: 0, nanos: 0 }) {
+  let t = timestamp.seconds * 1000
+  if ('nanos' in timestamp) {
+    t = t + timestamp.nanos / 1000000
+  }
+  const date = new Date(t)
+  const diff = Date.now() - date.valueOf()
+  var options
+  if (diff <= 60 * 1000) {
+    return `${Math.floor(diff / 1000)} ${this.$t('datetime.seconds')}${this.$t('datetime.ago')}`
+  } else if (diff <= 60 * 60 * 1000) {
+    // options = { minute: 'numeric' }
+    return `${Math.floor(diff / (60 * 1000))} ${this.$t('datetime.minutes')}${this.$t('datetime.ago')}`
+  } else if (diff <= 24 * 60 * 60 * 1000) {
+    // options = { hour: 'numeric', minute: 'numeric' }
+    return `${Math.floor(diff / (24 * 60 * 1000))} ${this.$t('datetime.hours')}${this.$t('datetime.ago')}`
+  } else if (diff <= 3 * 24 * 60 * 60 * 1000) {
+    return `${Math.floor(diff / (24 * 60 * 60 * 1000))} ${this.$t('datetime.days')}${this.$t('datetime.ago')}`
+  } else {
+    options = { year: 'numeric', month: 'long', day: 'numeric' }
+  }
+  return date.toLocaleDateString(undefined, options)
+}
