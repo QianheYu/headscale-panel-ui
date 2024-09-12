@@ -51,7 +51,7 @@
                 <!--                操作-->
                 <i class="el-icon el-icon-more" />
               </span>
-              <el-dropdown-menu v-slot="dropdown">
+              <el-dropdown-menu>
                 <!--                <el-dropdown-item v-if="permission" command="tags"><i class="el-icon-price-tag el-icon" />{{ $t('normal.tag') }}</el-dropdown-item>-->
                 <!--                <el-dropdown-item v-if="permission" command="move"><i class="el-icon-rank el-icon" />{{ $t('normal.move') }}</el-dropdown-item>-->
                 <el-dropdown-item command="expire"><i class="el-icon el-icon-refresh" />{{ $t('normal.expire') }}</el-dropdown-item>
@@ -75,8 +75,8 @@
       </div>
     </el-dialog>
     <!--    Device Details dialog box -->
-    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" @close="renameButton=false;routes=[]">
-      <el-descriptions class="margin-top" :column="2" border>
+    <el-dialog :title="info.given_name" :visible.sync="machineInfoVisible" :width="$device.mobile || $device.ipad || $device.android ? '90%' : '30%'" @close="renameButton=false;routes=[]">
+      <el-descriptions class="margin-top" :column="$device.mobile || $device.ipad || $device.android ? 1 : 2" border>
         <el-descriptions-item :label="$t('console.machines.machine')">
           <template v-if="!renameButton">{{ info.given_name }}</template>
           <template v-else>
